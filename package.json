@@ -1,0 +1,33 @@
+{
+  "name": "sample-embedded-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@shopify/app-bridge-react": "^1.29.0",
+    "@shopify/app-bridge-utils": "^1.29.0",
+    "@shopify/koa-shopify-auth": "^4.1.1",
+    "@shopify/polaris": "^6.2.0",
+    "apollo-boost": "^0.4.9",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.5.0",
+    "isomorphic-fetch": "^3.0.0",
+    "koa": "^2.13.1",
+    "koa-router": "^8.0.8",
+    "next": "^10.0.9",
+    "react": "^17.0.2",
+    "react-apollo": "^3.1.5",
+    "react-dom": "^17.0.2",
+    "store-js": "^2.0.4",
+    "webpack": "^4.46.0"
+  }
+}
