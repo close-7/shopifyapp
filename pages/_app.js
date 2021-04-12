@@ -10,6 +10,10 @@ import ClientRouter from "../components/ClientRouter";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
+import {Provider as ProviderRedux} from 'react-redux'
+import withRedux from 'next-redux-wrapper'
+import { initializeStore } from '../_store/store'
+
 class MyProvider extends React.Component {
   static contextType = Context;
 
@@ -30,8 +34,14 @@ class MyProvider extends React.Component {
 }
 
 class MyApp extends App {
+  static async getInitialProps({Component, ctx}) {
+    // We can dispatch from here too
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+  
+    return {pageProps};
+  }
   render() {
-    const { Component, pageProps, shopOrigin } = this.props;
+    const { Component, pageProps, shopOrigin,store } = this.props;
 
     const config = { apiKey: API_KEY, shopOrigin, forceRedirect: true };
     return (
@@ -40,18 +50,21 @@ class MyApp extends App {
           <title>Sample App</title>
           <meta charSet="utf-8" />
         </Head>
-        <Provider config={config}>
-          <ClientRouter />
-          <AppProvider i18n={translations}>
-            <MyProvider>
-              <Component {...pageProps} />
-            </MyProvider>
-          </AppProvider>
-        </Provider>
+        <ProviderRedux store={store}>
+          <Provider config={config}>
+            <ClientRouter />
+            <AppProvider i18n={translations}>
+              <MyProvider>
+                <Component {...pageProps} />
+              </MyProvider>
+            </AppProvider>
+          </Provider>
+        </ProviderRedux>
       </React.Fragment>
     );
   }
 }
+
 
 MyApp.getInitialProps = async ({ ctx }) => {
   return {
@@ -59,4 +72,4 @@ MyApp.getInitialProps = async ({ ctx }) => {
   };
 };
 
-export default MyApp;
+export default withRedux(initializeStore)(MyApp)
