@@ -94,7 +94,7 @@ app.prepare().then(() => {
 
   router.get("(/_next/static/.*)", handleRequest);
   router.get("/_next/webpack-hmr", handleRequest);
-  router.get("(.*)", verifyRequest(), handleRequest);
+  router.get("(.*)", handleRequest);
 
   server.use(router.allowedMethods());
   server.use(router.routes());
