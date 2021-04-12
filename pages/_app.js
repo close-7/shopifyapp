@@ -34,12 +34,6 @@ class MyProvider extends React.Component {
 }
 
 class MyApp extends App {
-  static async getInitialProps({Component, ctx}) {
-    // We can dispatch from here too
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-  
-    return {pageProps};
-  }
   render() {
     const { Component, pageProps, shopOrigin,store } = this.props;
 
@@ -50,24 +44,26 @@ class MyApp extends App {
           <title>Sample App</title>
           <meta charSet="utf-8" />
         </Head>
-        <ProviderRedux store={store}>
-          <Provider config={config}>
-            <ClientRouter />
+        <Provider config={config}>
+          <ClientRouter />
+          <ProviderRedux store={store}>
             <AppProvider i18n={translations}>
               <MyProvider>
                 <Component {...pageProps} />
               </MyProvider>
             </AppProvider>
-          </Provider>
-        </ProviderRedux>
+          </ProviderRedux>
+          
+        </Provider>
       </React.Fragment>
     );
   }
 }
 
-
-MyApp.getInitialProps = async ({ ctx }) => {
+MyApp.getInitialProps = async ({Component, ctx }) => {
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
   return {
+    pageProps,
     shopOrigin: ctx.query.shop,
   };
 };
